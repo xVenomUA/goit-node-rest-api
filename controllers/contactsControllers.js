@@ -1,36 +1,28 @@
 import { Types } from "mongoose";
 import { asyncCatch } from "../helpers/asynCatch.js";
-import { User } from "../models/userModel.js";
-import  { getListContacts, getOneContactByid, deleteContactByid, addContact, updateContactById} from "../services/contactsServices.js";
+import { Contacts } from "../models/userModel.js";
+
 
 
 export const getAllContacts = asyncCatch (async (req, res) => {
-        const list = await User.find();
+        const list = await Contacts.find();
         res.status(200).json(list); 
 });
 
 export const getOneContact = asyncCatch(async (req, res, next) => {
-    const { id } = req.params;
-        const isValid = Types.ObjectId.isValid(id); 
-        if(!isValid) {
-            return res.status(404).json({ message: 'Not found' });
-        }
-        const getOne = await User.findById(req.params.id);
+        const getOne = await req.user;
         res.json(getOne).status(200);
     });
 
 
 export const deleteContact = asyncCatch (async (req, res) => {
-        const DeleteContact = await User.findByIdAndDelete(req.params.id);
-        // if(!contact) {
-        //     return res.status(404).json({ message: 'Not found' });
-        // }
-        res.json(DeleteContact).status(200);
+        const deleteContact = await Contacts.findByIdAndDelete(req.params.id);
+        res.json(deleteContact).status(200);
 });
 
-export const createContact = asyncCatch (async (req, res) => {
 
-    const newUser = await User.create(req.body);
+export const createContact = asyncCatch (async (req, res) => {
+    const newUser = await Contacts.create(req.body);
     if(!newUser) {
         return res.status(400).json({ message: 'Contact not created' });
     }
@@ -38,14 +30,15 @@ export const createContact = asyncCatch (async (req, res) => {
 
 });
 
+
 export const updateContact = asyncCatch(async (req, res, next) => {
-    const update = await User.findByIdAndUpdate(req.params, req.body, {new: true, runValidators: true});
-    if(Object.keys(data).length === 0){
-        res.status(400).json({ message: "Body must have at least one field" });
-    }
-    
-    if(!update) {
-        return res.status(400).json({ message: 'Not found' });
-    }
+    const update = await Contacts.findByIdAndUpdate(req.params.id, req.body, {new: true});
     res.json(update).status(200);
 });
+
+
+export const updateStatus = asyncCatch(async (req, res, next) => {
+    const { id } = req.params;  
+    const update = await Contacts.findByIdAndUpdate(id, req.body, {new: true});
+    res.status(200).json(update);
+}); 

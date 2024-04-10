@@ -19,6 +19,7 @@ const userSchema = new Schema({
     },
 }, { 
     versionKey: false,  
+    // timestamps: true,
 })
 
-export const User = model("User", userSchema);
+export const Contacts = model("Contacts", userSchema);
