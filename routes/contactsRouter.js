@@ -11,10 +11,10 @@ import {
 import validateBody from "../helpers/validateBody.js";
 
 import { createContactSchema, patchContactSchema, updateContactSchema } from "../schemas/contactsSchemas.js";
-import { checkFavorite, checkUserBody, checkUserId } from "../middlewares/userMiddlewares.js";
+import { authenticate, checkFavorite, checkUserBody, checkUserId } from "../middlewares/userMiddlewares.js";
 
 const contactsRouter = express.Router();
-
+contactsRouter.use(authenticate);
 contactsRouter.get("/", getAllContacts);
 
 contactsRouter.use("/:id",checkUserId);
