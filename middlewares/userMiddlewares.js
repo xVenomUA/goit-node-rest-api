@@ -10,11 +10,11 @@ import { User } from "../models/usersModel.js";
 export const checkUserId = asyncCatch(async (req, res, next) => {
   const { id } = req.params;
   if (!Types.ObjectId.isValid(id)) throw new HttpError(400);
-  const user = await Contacts.findById(id);
-  if (!user) throw new HttpError(404);
-  req.user = user;
+  const contact = await Contacts.findById(id); 
+  if (!contact || contact.owner.toString()!== req.user.id ) throw new HttpError(404);
+  req.contact = contact;
   next();
-});
+}); 
 
 export const checkUserBody = asyncCatch(async (req, res, next) => {
   if (Object.keys(req.body).length === 0)
@@ -24,8 +24,8 @@ export const checkUserBody = asyncCatch(async (req, res, next) => {
 
 export const checkFavorite = asyncCatch(async (req, res, next) => {
   const { id } = req.params;
-  const user = await Contacts.findById(id);
-  if (!user) throw new HttpError(404);
+  const contact = await Contacts.findById(id);
+  if (!contact || contact.owner.toString()!== req.user.id ) throw new HttpError(404);
   if (req.body.favourite === undefined)
     throw new HttpError(400, "Favorite field is missing");
   next();

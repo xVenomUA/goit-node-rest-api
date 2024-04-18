@@ -5,12 +5,13 @@ import { Contacts } from "../models/contactsModel.js";
 
 
 export const getAllContacts = asyncCatch (async (req, res) => {
-        const list = await Contacts.find();
-        res.status(200).json(list); 
+    const list = await Contacts.find({ owner: req.user.id });   
+        res.status(200).json( list); 
 });
 
 export const getOneContact = asyncCatch(async (req, res, next) => {
-        const getOne = await req.user;
+        const getOne = await req.contact;
+        console.log(getOne)
         res.json(getOne).status(200);
     });
 
@@ -22,7 +23,13 @@ export const deleteContact = asyncCatch (async (req, res) => {
 
 
 export const createContact = asyncCatch (async (req, res) => {
-    const newUser = await Contacts.create(req.body);
+    const contact = {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        owner: req.user.id,
+    }
+    const newUser = await Contacts.create(contact);
     if(!newUser) {
         return res.status(400).json({ message: 'Contact not created' });
     }
