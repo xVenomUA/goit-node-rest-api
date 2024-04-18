@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { asyncCatch } from "../helpers/asynCatch.js";
-import { Contacts } from "../models/userModel.js";
+import { Contacts } from "../models/contactsModel.js";
 
 
 
