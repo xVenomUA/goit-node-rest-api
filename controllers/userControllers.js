@@ -9,6 +9,7 @@ export const register = asyncCatch(async (req, res) => {
     user: {
       email: newUser.email,
       subscription: newUser.subscription,
+      avatarURL: newUser.avatarURL,
     },
   });
 });
@@ -36,4 +37,8 @@ export const getCurrent = asyncCatch(async (req, res) => {
       email,
       subscription,
     });     
+}); 
+
+export const updateAvatar = asyncCatch(async (req, res) => {
+  
 }); 

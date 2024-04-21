@@ -61,3 +61,7 @@ export const authenticate = asyncCatch(async (req, res, next) => {
   next();
 });
 
+
+
+export const uploadAvatar = asyncCatch(async (req, res, next) => {
+}); 
