@@ -6,6 +6,8 @@ import { loginSchema, signUpSchema } from "../schemas/authSchemas.js";
 import { checkEmail } from "../services/userServices.js";
 import { verifyToken } from "../services/jwtServices.js";
 import { User } from "../models/usersModel.js";
+import multer from "multer";
+import { ImageService } from "../services/imageServices.js";
 
 export const checkUserId = asyncCatch(async (req, res, next) => {
   const { id } = req.params;
@@ -62,6 +64,5 @@ export const authenticate = asyncCatch(async (req, res, next) => {
 });
 
 
-
-export const uploadAvatar = asyncCatch(async (req, res, next) => {
-}); 
+//  
+export const uploadAvatar = ImageService.initUploadImageMiddleware("avatar");

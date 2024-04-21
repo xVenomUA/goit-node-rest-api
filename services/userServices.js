@@ -1,5 +1,6 @@
 import HttpError from "../helpers/HttpError.js";
 import { User } from "../models/usersModel.js";
+import { ImageService } from "./imageServices.js";
 import { createToken, verifyToken } from "./jwtServices.js";
 import bcrypt from "bcryptjs";
 export const signUp = async (data) => {
@@ -43,3 +44,23 @@ export const checkUser = async (data) => {
   return userWithToken;
 };
 
+export const updateImage = async (userData, user, file) => {
+  if (file) {
+    user.avatar = await ImageService.saveImage(
+      file,
+      {
+        maxFileSize: 2,
+        width: 250,
+        height: 250,
+      },
+      "avatars"
+    );
+  }
+  const updateUser = await User.findByIdAndUpdate(
+    user.id,
+    { avatarURL: user.avatar },
+    { new: true }
+  );
+
+  return updateUser;
+};

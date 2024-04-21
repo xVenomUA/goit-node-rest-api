@@ -1,7 +1,7 @@
 import HttpError from "../helpers/HttpError.js";
 import { asyncCatch } from "../helpers/asynCatch.js";
 import { User } from "../models/usersModel.js";
-import { checkUser, signUp } from "../services/userServices.js";
+import { checkUser, signUp, updateImage } from "../services/userServices.js";
 
 export const register = asyncCatch(async (req, res) => {
   const newUser = await signUp(req.body);
@@ -40,5 +40,6 @@ export const getCurrent = asyncCatch(async (req, res) => {
 }); 
 
 export const updateAvatar = asyncCatch(async (req, res) => {
-  
+    const user = await updateImage(req.body, req.user, req.file);
+    res.status(200).json(user);
 }); 

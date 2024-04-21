@@ -9,8 +9,9 @@ const usersRouter = Router();
 
 usersRouter.post("/register", checkUserDataSingUp , register);
 usersRouter.post("/login", checkUserDataLogIn, logIn);
+
 usersRouter.post("/logout", authenticate ,logout);
 usersRouter.get("/current", authenticate, getCurrent);
-usersRouter.patch("/avatars", uploadAvatar, updateAvatar);
+usersRouter.patch("/avatars", authenticate, uploadAvatar, updateAvatar);
 
 export default usersRouter;
