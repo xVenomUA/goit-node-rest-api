@@ -10,8 +10,10 @@ export const getAllContacts = asyncCatch (async (req, res) => {
 });
 
 export const getOneContact = asyncCatch(async (req, res, next) => {
-        const getOne = await req.contact;
-        console.log(getOne)
+        const getOne = await Contacts.findById(req.params.id);
+        if (!getOne || getOne.owner.toString() !== req.user.id){
+            return res.status(404).json({ message: 'Contact not found' });
+        }
         res.json(getOne).status(200);
     });
 

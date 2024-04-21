@@ -10,9 +10,6 @@ import { User } from "../models/usersModel.js";
 export const checkUserId = asyncCatch(async (req, res, next) => {
   const { id } = req.params;
   if (!Types.ObjectId.isValid(id)) throw new HttpError(400);
-  const contact = await Contacts.findById(id); 
-  if (!contact || contact.owner.toString()!== req.user.id ) throw new HttpError(404);
-  req.contact = contact;
   next();
 }); 
 
@@ -38,13 +35,13 @@ export const checkUserDataSingUp = asyncCatch(async (req, res, next) => {
   const emailCheck = await checkEmail(value.email);
   if (emailCheck) throw new HttpError(409, "Email in use");
   req.body = value;
-
   next();
 });
 
 export const checkUserDataLogIn = asyncCatch(async (req, res, next) => {
   const { value, errors } = loginSchema(req.body);
-  if (errors) throw new HttpError(400, errors.message);
+  console.log(errors)
+  if (errors) throw new HttpError(400, errors);
 
   req.body = value;
   next();
