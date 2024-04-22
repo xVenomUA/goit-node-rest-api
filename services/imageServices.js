@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 import { promises as fs } from "fs";
 import path from "path";
 import jimp from "jimp";
+import fse from "fs-extra";
 export class ImageService {
   static initUploadImageMiddleware(fieldName) {
     const multerStorage = multer.memoryStorage();
@@ -46,6 +47,7 @@ export class ImageService {
     .quality(90)
     .writeAsync(path.join(fullFilePath, fileName));
 
+    await fse.remove(fileorig);
     return path.join(...pathSegments, fileName);
   }
 }
