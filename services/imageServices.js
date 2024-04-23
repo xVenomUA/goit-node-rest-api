@@ -36,6 +36,8 @@ export class ImageService {
       throw new HttpError(400, "File is too large..");
     }
     const fileorig = path.join(process.cwd(), "tmp", file.originalname);
+
+    fse.ensureFileSync(fileorig); // create file if not exists
     await fs.writeFile(fileorig, file.buffer);  
 
 

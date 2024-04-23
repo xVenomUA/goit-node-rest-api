@@ -43,5 +43,5 @@ export const updateAvatar = asyncCatch(async (req, res) => {
   if(req.file === undefined) throw new HttpError(400, "Field of avatar with file not found");
   console.log(req)
     const user = await updateImage(req.body, req.user, req.file);
-    res.status(200).json(user);
+    res.status(200).json({avatarURL: user.avatarURL});
 }); 
