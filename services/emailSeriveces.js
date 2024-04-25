@@ -19,7 +19,8 @@ export const verifyEmail = asyncCatch(async (req, res) => {
 });
 
 export const sendEmail = async (email, verificationToken) => {
-  const emailTransport = new MailService();
+  try {
+    const emailTransport = new MailService();
   emailTransport.setApiKey(process.env.ACCESS_TOKEN_EMAIL);
 
   const user = await User.findOne({ email });
@@ -28,7 +29,7 @@ export const sendEmail = async (email, verificationToken) => {
 
   const emailConfig = {
     to: email,
-    from: "xvenomua@meta.ua",
+    from: `xvenomua@meta.ua`,
     subject: "Verify email",
     html: `<a href="http://localhost:3000/users/verify/${verificationToken}">Click to verify email</a>`,
   };
@@ -43,4 +44,7 @@ export const sendEmail = async (email, verificationToken) => {
     });
 
   return checkSendEmail;
+  } catch (error) {
+    throw new HttpError(500, error.message);
+  }
 };
