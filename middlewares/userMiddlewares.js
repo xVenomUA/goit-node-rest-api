@@ -2,7 +2,7 @@ import { Types, isValidObjectId } from "mongoose";
 import { asyncCatch } from "../helpers/asynCatch.js";
 import HttpError from "../helpers/HttpError.js";
 import { Contacts } from "../models/contactsModel.js";
-import { loginSchema, signUpSchema } from "../schemas/authSchemas.js";
+import { emailSchema, loginSchema, signUpSchema } from "../schemas/authSchemas.js";
 import { checkEmail } from "../services/userServices.js";
 import { verifyToken } from "../services/jwtServices.js";
 import { User } from "../models/usersModel.js";
@@ -64,3 +64,10 @@ export const authenticate = asyncCatch(async (req, res, next) => {
 
 //
 export const uploadAvatar = ImageService.initUploadImageMiddleware("avatars");
+
+export const checkEmailVerification = asyncCatch(async (req, res, next) => {
+  const {value, errors} = emailSchema(req.body);
+  if(errors) throw new HttpError(400, errors);
+  req.body = value;
+  next();
+}); 

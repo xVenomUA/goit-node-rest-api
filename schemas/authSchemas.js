@@ -24,3 +24,14 @@ export const loginSchema = validateUser((data) =>
     })
     .validate(data)
 );
+
+export const emailSchema = validateUser((data) =>
+  Joi.object()
+    .options({ abortEarly: false })
+    .keys({
+      email: Joi.string()
+        .required()
+        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } }),
+    })
+    .validate(data)
+);
